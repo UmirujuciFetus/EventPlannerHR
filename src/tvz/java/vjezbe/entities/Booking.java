@@ -1,16 +1,20 @@
 package tvz.java.vjezbe.entities;
 
+import java.math.BigDecimal;
+
+import static tvz.java.vjezbe.app.Main.NUMBER_OF_USERS;
+
 public class Booking {
     private User user;
-    private Ticket[] tickets;
-    private String status;
-    private Integer bookingID;
+    private Ticket tickets;
 
-    public Booking(User user, Ticket[] tickets, String status, Integer bookingID) {
+
+
+    public Booking(User user, Ticket tickets) {
         this.user = user;
         this.tickets = tickets;
-        this.status = status;
-        this.bookingID = bookingID;
+
+
     }
 
     public void  setUser(User user){
@@ -20,26 +24,24 @@ public class Booking {
         return user;
     }
 
-    public void setTickets(Ticket[] tickets){
+    public void setTickets(Ticket tickets){
         this.tickets = tickets;
     }
-    public Ticket[] getTickets(){
+    public Ticket getTickets(){
         return tickets;
     }
 
-    public void setStatus(String status){
-        this.status = status;
-    }
-    public String getStatus(){
-        return status;
+    public static BigDecimal totalBookingPrice(){
+        Booking[] bookings = new Booking[NUMBER_OF_USERS];
+        BigDecimal sum = BigDecimal.ZERO;
+        for (Booking elem : bookings) {
+            sum = sum.add(elem.getTickets().getPrice());
+
+        }
+        return sum;
     }
 
-    public void setBookingID(Integer bookingID){
-        this.bookingID = bookingID;
-    }
-    public Integer getBookingID(){
-        return bookingID;
-    }
+
 
 }
 

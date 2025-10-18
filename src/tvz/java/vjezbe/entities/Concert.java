@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 public class Concert {
     private String concertName;
     private LocalDateTime concertDateTime;
-    private String location;
 
-    public Concert(String concertName, Integer id, LocalDateTime concertDateTime, String location) {
+
+    public Concert(String concertName, LocalDateTime concertDateTime) {
         this.concertName = concertName;
         this.concertDateTime = concertDateTime;
-        this.location = location;
+
     }
 
     //region getteriSetteri
@@ -25,13 +25,6 @@ public class Concert {
     }
     public LocalDateTime getConcertDateTime(){
         return concertDateTime;
-    }
-
-    public void setLocation(String location){
-        this.location = location;
-    }
-    public String getLocation(){
-        return location;
     }
     //endregion
 }

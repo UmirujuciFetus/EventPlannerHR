@@ -1,36 +1,17 @@
 package tvz.java.vjezbe.entities;
 
 public class User {
-    private String username;
-    private String password;
+
     private String firstName;
     private String lastName;
     private String email;
 
-
-    public User(String username, String password, String firstName, String lastName, String email) {
-        this.username = username;
-        this.password = password;
+    public User( String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
-
-
-
-    public void setUsername(String  username) {
-        this.username = username;
-    }
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public User() {}            //default konstruktor
 
     public String getFirstName() {
         return firstName;

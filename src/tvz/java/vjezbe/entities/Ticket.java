@@ -1,11 +1,12 @@
 package tvz.java.vjezbe.entities;
+import java.math.BigDecimal;
 
 public class Ticket {
     private Concert concert;
-    private Integer price;
+    private BigDecimal price;
     private Integer ticketID;
 
-    public Ticket(Concert concert, Integer price, Integer ticketID){
+    public Ticket(Concert concert, BigDecimal price, Integer ticketID){
         this.concert = concert;
         this.price = price;
         this.ticketID = ticketID;
@@ -18,10 +19,10 @@ public class Ticket {
         return concert;
     }
 
-    public void setPrice(Integer price){
+    public void setPrice(BigDecimal price){
         this.price = price;
     }
-    public Integer getPrice(){
+    public BigDecimal getPrice(){
         return price;
     }
 
