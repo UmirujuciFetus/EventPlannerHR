@@ -22,7 +22,7 @@ public class Main {
         System.out.println("Dobrodošli u EventPlanner Hrvatska!");
         System.out.println("Želite li organizirati događanja i korisnike?");
 
-        Booking searched = null;
+        Booking searched;
         if ("DA".equals(sc.nextLine())) {
             Booking[] bookings = generateBookings(sc);
 
