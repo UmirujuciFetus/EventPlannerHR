@@ -14,13 +14,12 @@ public class Main {
 
     public static final Integer NUMBER_OF_USERS = 2;
 
-    static void main() {
+    static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
 
-        System.out.println("Dobrodošli u EventPlanner Hrvatska!");
-        System.out.println("Želite li organizirati događanja i korisnike?");
+        System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
         Booking searched;
         if ("DA".equals(sc.nextLine())) {
@@ -35,27 +34,17 @@ public class Main {
 
             if ("MAX".equals(answer)) {
                 Booking maxBooking = calculateMaxBooking(bookings);
-                System.out.println("Booking s najvećom cijenom: ");
-                System.out.println("Booking ID: " + maxBooking.getBookingID());
-                System.out.println("Ime i prezime korisnika: " + maxBooking.getUser().getFirstName() + " " + maxBooking.getUser().getLastName());
-                System.out.println("Email korisnika:  " + maxBooking.getUser().getEmail());
-                System.out.println("Ime i datum koncerta: " + maxBooking.getTickets().getConcert().getConcertName() + " " + maxBooking.getTickets().getConcert().getConcertDateTime());
+                System.out.println("Booking s najvećom cijenom: " + maxBooking.toString());
+
             } else if ("MIN".equals(answer)) {
                 Booking minBooking = calculateMinBooking(bookings);
-                System.out.println("Booking s najMANJOM cijenom: ");
-                System.out.println("Booking ID: " + minBooking.getBookingID());
-                System.out.println("Ime i prezime korisnika: " + minBooking.getUser().getFirstName() + " " + minBooking.getUser().getLastName());
-                System.out.println("Email korisnika:  " + minBooking.getUser().getEmail());
-                System.out.println("Ime i datum koncerta" + minBooking.getTickets().getConcert().getConcertName() + " " + minBooking.getTickets().getConcert().getConcertDateTime());
+                System.out.println("Booking s najMANJOM cijenom: " + minBooking.toString());
             }
 
             System.out.print("Unesite ID: ");
             searched = Booking.bookingSearch(bookings, sc);
             if(searched != null){
-                System.out.println("Booking ID: " + searched.getBookingID());
-                System.out.println("Ime i prezime korisnika: " + searched.getUser().getFirstName() + " " + searched.getUser().getLastName());
-                System.out.println("Email korisnika:  " + searched.getUser().getEmail());
-                System.out.println("Ime i datum koncerta" + searched.getTickets().getConcert().getConcertName() + " " + searched.getTickets().getConcert().getConcertDateTime());
+                System.out.println(searched);
             }
 
 

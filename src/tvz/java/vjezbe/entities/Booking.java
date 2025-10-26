@@ -52,5 +52,12 @@ public class Booking {
         return null;
     }
 
+    @Override
+    public String toString(){
+        return "Booking ID: " + bookingID + "\nIme i prezime korisnika: " + user.getFirstName() + " " + user.getLastName()
+                + "\nE-mail korisnika: " + user.getEmail() + "\nDatum i vrijeme koncerta: "
+                + tickets.getConcert().getConcertName() + " " + tickets.getConcert().getConcertDateTime();
+    }
+
 }
 
