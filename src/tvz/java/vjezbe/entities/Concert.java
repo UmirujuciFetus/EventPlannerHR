@@ -1,30 +1,32 @@
 package tvz.java.vjezbe.entities;
 import java.time.LocalDateTime;
 
-public class Concert {
-    private String concertName;
-    private LocalDateTime concertDateTime;
+public class Concert extends Events {
+    private String artistName;
+    private String concertGenre;
 
-
-    public Concert(String concertName, LocalDateTime concertDateTime) {
-        this.concertName = concertName;
-        this.concertDateTime = concertDateTime;
-
+    public Concert(String eventName, LocalDateTime eventDate, String artistName, String concertGenre) {
+        super(eventName,eventDate);
+        this.artistName = artistName;
+        this.concertGenre = concertGenre;
     }
 
-    //region getteriSetteri
-    public void setConcertName(String concertName) {
-        this.concertName = concertName;
-    }
-    public String getConcertName(){
-        return concertName;
+    @Override
+    public void getEventType(){
+        System.out.println("Ovaj događaj je Koncert!");
     }
 
-    public void setConcertDateTime(LocalDateTime concertDateTime){
-        this.concertDateTime = concertDateTime;
+    public String getArtistName() {
+        return artistName;
     }
-    public LocalDateTime getConcertDateTime(){
-        return concertDateTime;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
-    //endregion
+
+    public String getConcertGenre() {
+        return concertGenre;
+    }
+    public void setConcertGenre(String concertGenre) {
+        this.concertGenre = concertGenre;
+    }
 }

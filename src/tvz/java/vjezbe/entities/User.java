@@ -11,7 +11,6 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
-    public User() {}            //default konstruktor
 
     public String getFirstName() {
         return firstName;

@@ -34,11 +34,11 @@ public class Main {
 
             if ("MAX".equals(answer)) {
                 Booking maxBooking = calculateMaxBooking(bookings);
-                System.out.println("Booking s najvećom cijenom: " + maxBooking.toString());
+                System.out.println("Booking s najvećom cijenom: " + maxBooking);
 
             } else if ("MIN".equals(answer)) {
                 Booking minBooking = calculateMinBooking(bookings);
-                System.out.println("Booking s najMANJOM cijenom: " + minBooking.toString());
+                System.out.println("Booking s najMANJOM cijenom: " + minBooking);
             }
 
             System.out.print("Unesite ID: ");
@@ -77,14 +77,20 @@ public class Main {
 
             User user = new User(name, lastName, email);
 
-            System.out.println("Unesite ime " + (i + 1) + ". koncerta: ");
+            System.out.println("Unesite ime " + (i + 1) + ". događaja/koncerta: ");
+            String eventName = sc.nextLine();
+
+            System.out.println("Unesite ime " + (i + 1) + ". izvođača: ");
             String concertName = sc.nextLine();
 
-            System.out.println("Unesite datum " + (i + 1) + ". koncerta: ");
+            System.out.println("Unesite datum " + (i + 1) + ". događaja/koncerta: ");
             String datum = sc.nextLine();
-            LocalDateTime concertDateTime = LocalDateTime.parse(datum, format);
+            LocalDateTime eventDateTime = LocalDateTime.parse(datum, format);
 
-            Concert concert = new Concert(concertName, concertDateTime);
+            System.out.println("Unesite žanr " + (i + 1) + ". izvođača: ");
+            String concertGenre = sc.nextLine();
+
+            Concert concert = new Concert(eventName,eventDateTime, concertName, concertGenre);
 
             System.out.println("Unesite cijenu " + (i + 1) + ". ulaznice");
             BigDecimal price = sc.nextBigDecimal();
@@ -131,13 +137,13 @@ public class Main {
             System.out.println("Nema podataka o bookinzima!");
             return null;
         }
-        Booking minBookingPrice = bookings[0];
+        Booking minBooking= bookings[0];
         for (Booking elem : bookings) {
-            if (elem.getTickets().getPrice().compareTo(minBookingPrice.getTickets().getPrice()) < 0) {
-                minBookingPrice = elem;
+            if (elem.getTickets().getPrice().compareTo(minBooking.getTickets().getPrice()) < 0) {
+                minBooking = elem;
             }
         }
-        return minBookingPrice;
+        return minBooking;
     }
 }
 

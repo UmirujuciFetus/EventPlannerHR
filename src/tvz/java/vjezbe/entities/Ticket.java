@@ -2,21 +2,21 @@ package tvz.java.vjezbe.entities;
 import java.math.BigDecimal;
 
 public class Ticket {
-    private Concert concert;
+    private Events event;
     private BigDecimal price;
 
-    public Ticket(Concert concert, BigDecimal price) {
-        this.concert = concert;
+    public Ticket(Events event, BigDecimal price) {
+        this.event = event;
         this.price = price;
 
     }
 
-    public void setConcert(Concert concert) {
-        this.concert = concert;
+    public void setEvent(Events event) {
+        this.event = event;
     }
 
-    public Concert getConcert() {
-        return concert;
+    public Events getEvent() {
+        return event;
     }
 
     public void setPrice(BigDecimal price) {

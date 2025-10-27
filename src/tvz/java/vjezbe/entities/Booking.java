@@ -1,9 +1,5 @@
 package tvz.java.vjezbe.entities;
-
-import java.math.BigDecimal;
 import java.util.Scanner;
-
-import static tvz.java.vjezbe.app.Main.NUMBER_OF_USERS;
 
 public class Booking {
     private User user;
@@ -52,11 +48,14 @@ public class Booking {
         return null;
     }
 
+    // tu je moguce napravit downcasting i instanceof, jer triba pristupit nizem objektu preko eventa
+    // za laksi kod i manje dodavanja stvari kasnije, mozda bolje napravit abstraktnu metodu u events -
+    // - kako bi u svakoj podklasi mogli override i napravit ka mini toString i onda je samo dodat u ovaj toString
     @Override
     public String toString(){
         return "Booking ID: " + bookingID + "\nIme i prezime korisnika: " + user.getFirstName() + " " + user.getLastName()
                 + "\nE-mail korisnika: " + user.getEmail() + "\nDatum i vrijeme koncerta: "
-                + tickets.getConcert().getConcertName() + " " + tickets.getConcert().getConcertDateTime();
+                + tickets.getEvent().() + " " + tickets.getConcert().getConcertDateTime();
     }
 
 }
