@@ -53,9 +53,10 @@ public class Booking {
     // - kako bi u svakoj podklasi mogli override i napravit ka mini toString i onda je samo dodat u ovaj toString
     @Override
     public String toString(){
+        Events event = tickets.getEvent();
         return "Booking ID: " + bookingID + "\nIme i prezime korisnika: " + user.getFirstName() + " " + user.getLastName()
                 + "\nE-mail korisnika: " + user.getEmail() + "\nDatum i vrijeme koncerta: "
-                + tickets.getEvent().() + " " + tickets.getConcert().getConcertDateTime();
+                + tickets.getEvent().getEventDate() + " " + event.getStringForm();
     }
 
 }

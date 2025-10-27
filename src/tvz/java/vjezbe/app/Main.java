@@ -5,10 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-import tvz.java.vjezbe.entities.Concert;
-import tvz.java.vjezbe.entities.Ticket;
-import tvz.java.vjezbe.entities.User;
-import tvz.java.vjezbe.entities.Booking;
+import tvz.java.vjezbe.entities.*;
 
 public class Main {
 
@@ -22,6 +19,9 @@ public class Main {
         System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
         Booking searched;
+        final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+
+        Events[] events =  {new Festival("Woodstock", LocalDateTime.parse("20.08.1975. 18:00", format))};
         if ("DA".equals(sc.nextLine())) {
             Booking[] bookings = generateBookings(sc);
 
@@ -39,6 +39,9 @@ public class Main {
             } else if ("MIN".equals(answer)) {
                 Booking minBooking = calculateMinBooking(bookings);
                 System.out.println("Booking s najMANJOM cijenom: " + minBooking);
+            }
+            else {
+                System.out.println("Krivi upit!");
             }
 
             System.out.print("Unesite ID: ");
@@ -90,7 +93,7 @@ public class Main {
             System.out.println("Unesite žanr " + (i + 1) + ". izvođača: ");
             String concertGenre = sc.nextLine();
 
-            Concert concert = new Concert(eventName,eventDateTime, concertName, concertGenre);
+            Events concert = new Concert(eventName,eventDateTime, concertName, concertGenre);
 
             System.out.println("Unesite cijenu " + (i + 1) + ". ulaznice");
             BigDecimal price = sc.nextBigDecimal();

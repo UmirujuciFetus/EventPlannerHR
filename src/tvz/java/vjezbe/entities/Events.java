@@ -1,7 +1,7 @@
 package tvz.java.vjezbe.entities;
 import java.time.LocalDateTime;
 
-public abstract class Events {
+public abstract non-sealed class Events implements EventState {
     protected String eventName;
     protected LocalDateTime eventDate;
 
@@ -26,4 +26,5 @@ public abstract class Events {
 
 
     public abstract void getEventType();
+    public abstract String getStringForm();
 }

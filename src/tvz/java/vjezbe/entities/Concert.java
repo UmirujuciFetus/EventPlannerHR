@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 public class Concert extends Events {
     private String artistName;
     private String concertGenre;
+    private boolean isSoldOut;
+    private boolean isCancelled;
 
     public Concert(String eventName, LocalDateTime eventDate, String artistName, String concertGenre) {
         super(eventName,eventDate);
@@ -11,10 +13,6 @@ public class Concert extends Events {
         this.concertGenre = concertGenre;
     }
 
-    @Override
-    public void getEventType(){
-        System.out.println("Ovaj događaj je Koncert!");
-    }
 
     public String getArtistName() {
         return artistName;
@@ -29,4 +27,14 @@ public class Concert extends Events {
     public void setConcertGenre(String concertGenre) {
         this.concertGenre = concertGenre;
     }
+
+    @Override
+    public void getEventType(){
+        System.out.println("Ovaj događaj je Koncert!");
+    }
+    @Override
+    public String getStringForm(){
+        return "Ime izvođača: "+ getArtistName() + " Žanr koncerta: " + getConcertGenre();
+    }
+
 }
