@@ -9,7 +9,7 @@ public class MoviePremiere extends Events{
 
     @Override
     public void getEventType() {
-        System.out.println("Događaj je premijera filma!");
+        System.out.println("Ovaj događaj je premijera filma!");
     }
 
     @Override

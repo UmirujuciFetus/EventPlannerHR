@@ -9,7 +9,7 @@ public class Festival extends Events{
 
     @Override
     public void getEventType() {
-        System.out.println("Događaj je festival");
+        System.out.println("Ovaj događaj je festival!");
     }
 
     @Override

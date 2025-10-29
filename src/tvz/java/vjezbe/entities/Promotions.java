@@ -9,7 +9,7 @@ public class Promotions extends Events{
 
     @Override
     public void getEventType() {
-        System.out.println("Događaj je promocija");
+        System.out.println("Ovaj događaj je promocija!");
     }
 
     @Override

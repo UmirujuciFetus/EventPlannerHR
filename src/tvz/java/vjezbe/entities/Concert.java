@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 public class Concert extends Events {
     private String artistName;
     private String concertGenre;
-    private boolean isSoldOut;
-    private boolean isCancelled;
 
     public Concert(String eventName, LocalDateTime eventDate, String artistName, String concertGenre) {
         super(eventName,eventDate);
@@ -30,7 +28,7 @@ public class Concert extends Events {
 
     @Override
     public void getEventType(){
-        System.out.println("Ovaj događaj je Koncert!");
+        System.out.println("Ovaj događaj je koncert!");
     }
     @Override
     public String getStringForm(){

@@ -24,7 +24,7 @@ public abstract non-sealed class Events implements EventState {
         return eventDate;
     }
 
-
     public abstract void getEventType();
     public abstract String getStringForm();
+
 }

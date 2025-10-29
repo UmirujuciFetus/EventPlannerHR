@@ -39,9 +39,11 @@ public class Booking {
     public static Booking bookingSearch(Booking[] bookings, Scanner sc){
         Integer searchID = sc.nextInt();
 
-        for(Integer i =0;i<bookings.length;i++){
-            if(bookings[i].getBookingID().equals(searchID)){
-                return bookings[i];
+        if(bookings != null && bookings.length > 0){
+            for(Integer i =0;i<bookings.length;i++){
+                if(bookings[i].getBookingID().equals(searchID)){
+                    return bookings[i];
+                }
             }
         }
         System.out.println("Neispravan Booking ID!");
@@ -56,7 +58,7 @@ public class Booking {
         Events event = tickets.getEvent();
         return "Booking ID: " + bookingID + "\nIme i prezime korisnika: " + user.getFirstName() + " " + user.getLastName()
                 + "\nE-mail korisnika: " + user.getEmail() + "\nDatum i vrijeme koncerta: "
-                + tickets.getEvent().getEventDate() + " " + event.getStringForm();
+                + tickets.getEvent().getEventDate() + "\n" + event.getStringForm();
     }
 
 }

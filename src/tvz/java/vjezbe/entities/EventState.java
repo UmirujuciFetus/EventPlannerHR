@@ -1,4 +1,5 @@
 package tvz.java.vjezbe.entities;
+// upitan interface, mozda bolje napravit neki za bookingIdGenerator???? mozda????
 
 public sealed interface EventState permits Events{
     default void soldOut(){

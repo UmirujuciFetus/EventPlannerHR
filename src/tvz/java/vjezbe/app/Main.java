@@ -10,56 +10,49 @@ import tvz.java.vjezbe.entities.*;
 public class Main {
 
     public static final Integer NUMBER_OF_USERS = 2;
+    public static final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
 
     static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-
         System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
-        Booking searched;
-        final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+        Events[] events = new Events[5];
+        events[0] = new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format));
+        events[1] = new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format));
+        events[2] = new Festival("Woodstock Festival",LocalDateTime.parse("15.06.1976. 10:00", format));
+        events[3] = new Promotions("Promocija Studenata",LocalDateTime.parse("06.11.2025. 13:00", format));
+        events[4] = new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal");
 
-        Events[] events =  {new Festival("Woodstock", LocalDateTime.parse("20.08.1975. 18:00", format))};
-        if ("DA".equals(sc.nextLine())) {
+        for(Events e : events){ e.getEventType(); }
+
+        if ("DA".equalsIgnoreCase(sc.nextLine())) {
             Booking[] bookings = generateBookings(sc);
 
-
             System.out.println("Ukupna cijena svih bookinga je: " + totalBookingPrice(bookings));
-
 
             System.out.print("Želite li najveću ili najmanju cijenu? (MAX/MIN): ");
             String answer = sc.nextLine();
 
-            if ("MAX".equals(answer)) {
-                Booking maxBooking = calculateMaxBooking(bookings);
-                System.out.println("Booking s najvećom cijenom: " + maxBooking);
+            if ("MAX".equalsIgnoreCase(answer)) {
+                System.out.println("Booking s najvećom cijenom: " + calculateMaxBooking(bookings));
 
-            } else if ("MIN".equals(answer)) {
-                Booking minBooking = calculateMinBooking(bookings);
-                System.out.println("Booking s najMANJOM cijenom: " + minBooking);
+            } else if ("MIN".equalsIgnoreCase(answer)) {
+                System.out.println("Booking s najMANJOM cijenom: " + calculateMinBooking(bookings));
             }
             else {
                 System.out.println("Krivi upit!");
             }
-
             System.out.print("Unesite ID: ");
-            searched = Booking.bookingSearch(bookings, sc);
-            if(searched != null){
-                System.out.println(searched);
-            }
-
-
+            System.out.println( Booking.bookingSearch(bookings, sc) != null );
         }
-
-
     }
 
 
     private static Booking[] generateBookings(Scanner sc) {
 
-        final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+
         Booking[] bookings = new Booking[NUMBER_OF_USERS];
 
         for (Integer i = 0; i < NUMBER_OF_USERS; i++) {
