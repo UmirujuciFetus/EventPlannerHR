@@ -36,26 +36,13 @@ public class Booking {
     }
 
 
-    public static Booking bookingSearch(Booking[] bookings, Scanner sc){
-        Integer searchID = sc.nextInt();
-
-        if(bookings != null && bookings.length > 0){
-            for(Integer i =0;i<bookings.length;i++){
-                if(bookings[i].getBookingID().equals(searchID)){
-                    return bookings[i];
-                }
-            }
-        }
-        System.out.println("Neispravan Booking ID!");
-        return null;
-    }
 
     // tu je moguce napravit downcasting i instanceof, jer triba pristupit nizem objektu preko eventa
     // za laksi kod i manje dodavanja stvari kasnije, mozda bolje napravit abstraktnu metodu u events -
     // - kako bi u svakoj podklasi mogli override i napravit ka mini toString i onda je samo dodat u ovaj toString
     @Override
-    public String toString(){
-        Events event = tickets.getEvent();
+    public String toString() {
+        Event event = tickets.getEvent();
         return "Booking ID: " + bookingID + "\nIme i prezime korisnika: " + user.getFirstName() + " " + user.getLastName()
                 + "\nE-mail korisnika: " + user.getEmail() + "\nDatum i vrijeme koncerta: "
                 + tickets.getEvent().getEventDate() + "\n" + event.getStringForm();

@@ -2,20 +2,20 @@ package tvz.java.vjezbe.entities;
 import java.math.BigDecimal;
 
 public class Ticket {
-    private Events event;
+    private Event event;
     private BigDecimal price;
 
-    public Ticket(Events event, BigDecimal price) {
+    public Ticket(Event event, BigDecimal price) {
         this.event = event;
         this.price = price;
 
     }
 
-    public void setEvent(Events event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
-    public Events getEvent() {
+    public Event getEvent() {
         return event;
     }
 

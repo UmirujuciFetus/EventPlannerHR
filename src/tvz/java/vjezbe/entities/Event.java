@@ -1,11 +1,11 @@
 package tvz.java.vjezbe.entities;
 import java.time.LocalDateTime;
 
-public abstract non-sealed class Events implements EventState {
+public abstract class Event {
     protected String eventName;
     protected LocalDateTime eventDate;
 
-    Events(String eventName, LocalDateTime eventDate){
+    Event(String eventName, LocalDateTime eventDate){
         this.eventName = eventName;
         this.eventDate = eventDate;
     }
@@ -23,6 +23,8 @@ public abstract non-sealed class Events implements EventState {
     public LocalDateTime getEventDate(){
         return eventDate;
     }
+
+
 
     public abstract void getEventType();
     public abstract String getStringForm();

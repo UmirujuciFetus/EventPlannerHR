@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 import tvz.java.vjezbe.entities.*;
+import tvz.java.vjezbe.entities.BookingImplementation;
+import tvz.java.vjezbe.entities.TicketImplementation;
 
 public class Main {
 
@@ -16,41 +18,46 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
+        TicketImplementation ticketService = new TicketImplementation();
+        BookingImplementation bookingService = new BookingImplementation();
+
         System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
-        Events[] events = new Events[5];
+        Event[] events = new Event[5];
         events[0] = new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format));
         events[1] = new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format));
         events[2] = new Festival("Woodstock Festival",LocalDateTime.parse("15.06.1976. 10:00", format));
         events[3] = new Promotions("Promocija Studenata",LocalDateTime.parse("06.11.2025. 13:00", format));
         events[4] = new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal");
 
-        for(Events e : events){ e.getEventType(); }
+        for(Event e : events){ e.getEventType(); }
 
         if ("DA".equalsIgnoreCase(sc.nextLine())) {
-            Booking[] bookings = generateBookings(sc);
 
-            System.out.println("Ukupna cijena svih bookinga je: " + totalBookingPrice(bookings));
+            Booking[] bookings = generateBookings(sc, ticketService);
+
+            System.out.println("Ukupna cijena svih bookinga je: " + bookingService.totalBookingPrice(bookings));
 
             System.out.print("Želite li najveću ili najmanju cijenu? (MAX/MIN): ");
             String answer = sc.nextLine();
 
             if ("MAX".equalsIgnoreCase(answer)) {
-                System.out.println("Booking s najvećom cijenom: " + calculateMaxBooking(bookings));
+                System.out.println("Booking s najvećom cijenom: " + bookingService.calculateMaxBooking(bookings));
 
             } else if ("MIN".equalsIgnoreCase(answer)) {
-                System.out.println("Booking s najMANJOM cijenom: " + calculateMinBooking(bookings));
+                System.out.println("Booking s najMANJOM cijenom: " + bookingService.calculateMinBooking(bookings));
             }
             else {
                 System.out.println("Krivi upit!");
             }
             System.out.print("Unesite ID: ");
-            System.out.println( Booking.bookingSearch(bookings, sc) != null );
+
+            System.out.println( bookingService.bookingSearch(bookings, sc) );
         }
     }
 
 
-    private static Booking[] generateBookings(Scanner sc) {
+    private static Booking[] generateBookings(Scanner sc, TicketImplementation ticketService) {
 
 
         Booking[] bookings = new Booking[NUMBER_OF_USERS];
@@ -86,10 +93,15 @@ public class Main {
             System.out.println("Unesite žanr " + (i + 1) + ". izvođača: ");
             String concertGenre = sc.nextLine();
 
-            Events concert = new Concert(eventName,eventDateTime, concertName, concertGenre);
+            Event concert = new Concert.ConcertBuilder()
+                    .artistName(concertName)
+                    .concertGenre(concertGenre)
+                    .eventName(eventName)
+                    .eventDateTime(eventDateTime)
+                    .build();
 
-            System.out.println("Unesite cijenu " + (i + 1) + ". ulaznice");
-            BigDecimal price = sc.nextBigDecimal();
+
+            BigDecimal price = ticketService.setTicketPrice(sc, (i+1));
 
             System.out.println("Unesite ID " + (i + 1) + ". bookinga");
             Integer id = sc.nextInt();
@@ -106,41 +118,8 @@ public class Main {
         return bookings;
     }
 
-    private static BigDecimal totalBookingPrice(Booking[] bookings) {
-        BigDecimal sum = BigDecimal.ZERO;
-        for (Booking elem : bookings) {
-            sum = sum.add(elem.getTickets().getPrice());
-        }
-        return sum;
-    }
 
-    private static Booking calculateMaxBooking(Booking[] bookings) {
-        if (bookings == null || bookings.length == 0) {
-            System.out.println("Nema podataka o bookinzima!");
-            return null;
-        }
-        Booking maxBookingPrice = bookings[0];
-        for (Booking elem : bookings) {
-            if (elem.getTickets().getPrice().compareTo(maxBookingPrice.getTickets().getPrice()) > 0) {
-                maxBookingPrice = elem;
-            }
-        }
-        return maxBookingPrice;
-    }
 
-    private static Booking calculateMinBooking(Booking[] bookings) {
-        if (bookings == null || bookings.length == 0) {
-            System.out.println("Nema podataka o bookinzima!");
-            return null;
-        }
-        Booking minBooking= bookings[0];
-        for (Booking elem : bookings) {
-            if (elem.getTickets().getPrice().compareTo(minBooking.getTickets().getPrice()) < 0) {
-                minBooking = elem;
-            }
-        }
-        return minBooking;
-    }
 }
 
 

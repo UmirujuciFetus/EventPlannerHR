@@ -2,7 +2,7 @@ package tvz.java.vjezbe.entities;
 
 import java.time.LocalDateTime;
 
-public class Festival extends Events{
+public class Festival extends Event {
     public Festival(String eventName, LocalDateTime eventDate) {
         super(eventName, eventDate);
     }
