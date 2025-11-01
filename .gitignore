@@ -4,8 +4,6 @@ out/
 !**/src/test/**/out/
 .kotlin
 
-.idea/*
-
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -30,4 +28,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
 /.idea/
