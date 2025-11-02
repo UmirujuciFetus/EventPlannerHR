@@ -69,11 +69,32 @@ public class Main {
             // takoder, posto jedan booking ugl radi jedan user, nekako uredit to da se pita input samo jednog usera po bookingu ali da taj user opet moze vise koncerata
             // ideja: napravit format za email i generiranje bookingID
             System.out.println((i + 1) + ". booking");
-            System.out.println("Unesite ime korisnika: ");
-            String name = sc.nextLine();
+
+            InputValidator inputValidator = new InputValidator();
+
+            String name = "";
+
+            //prvi checked exception
+            // drugi dodat mozda za mail, lastname ž
+            // ili dodat drugi za readanje filevoa ( mozda log fileova u ovom slucaju)
+
+            //ostala dva unchecked dodat za krivu cijenu (-) i sl.
+            //pokusat nacin za ovo stavit u neki odvojeni dio????
+            do {
+                try {
+                    System.out.println("Unesite ime korisnika: ");
+                    name = sc.nextLine();
+                    inputValidator.validateName(name);
+
+                } catch (InvalidUserInputException ex) {
+                    ex.printStackTrace();
+                }
+            }while (name.isEmpty());
+
 
             System.out.println("Unesite prezime " + (i + 1) + ". korisnika: ");
             String lastName = sc.nextLine();
+
 
             System.out.println("Unesite email " + (i + 1) + ".korisnika: ");
             String email = sc.nextLine();
@@ -101,7 +122,7 @@ public class Main {
                     .build();
 
 
-            BigDecimal price = ticketService.setTicketPrice(sc, (i+1));
+            BigDecimal price = ticketService.setTicketPrice(sc, (i + 1));
 
             System.out.println("Unesite ID " + (i + 1) + ". bookinga");
             Integer id = sc.nextInt();

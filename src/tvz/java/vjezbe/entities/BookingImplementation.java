@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class BookingImplementation implements BookingInterface {
 
+    @Override
     public BigDecimal totalBookingPrice(Booking[] bookings) {
         BigDecimal sum = BigDecimal.ZERO;
         for (Booking elem : bookings) {
@@ -13,6 +14,7 @@ public class BookingImplementation implements BookingInterface {
         return sum;
     }
 
+    @Override
     public Booking calculateMaxBooking(Booking[] bookings) {
         if (bookings == null || bookings.length == 0) {
             System.out.println("Nema podataka o bookinzima!");
@@ -27,6 +29,7 @@ public class BookingImplementation implements BookingInterface {
         return maxBookingPrice;
     }
 
+    @Override
     public Booking calculateMinBooking(Booking[] bookings) {
         if (bookings == null || bookings.length == 0) {
             System.out.println("Nema podataka o bookinzima!");
@@ -42,6 +45,7 @@ public class BookingImplementation implements BookingInterface {
     }
 
 
+    @Override
     public BookingRecord bookingSearch(Booking[] bookings, Scanner sc){
         Integer searchID = sc.nextInt();
 
