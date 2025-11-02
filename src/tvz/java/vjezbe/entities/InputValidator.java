@@ -16,4 +16,14 @@ public class InputValidator {
         }
     }
 
+    public void validateEmail(String email) throws IllegalArgumentException, InvalidUserInputException {
+        if(email  == null || email.isEmpty()){
+            throw new InvalidUserInputException("E-mail ne smije biti prazan!");
+        }
+
+        if(!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+            throw new IllegalArgumentException("Format e-maila nije valjan!");
+        }
+    }
+
 }

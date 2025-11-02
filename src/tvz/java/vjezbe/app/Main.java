@@ -72,7 +72,7 @@ public class Main {
 
             InputValidator inputValidator = new InputValidator();
 
-            String name = "";
+            String name = "", email ="";
 
             //prvi checked exception
             // drugi dodat mozda za mail, lastname ž
@@ -91,13 +91,17 @@ public class Main {
                 }
             }while (name.isEmpty());
 
+            try {
+                System.out.println("Unesite email " + (i + 1) + ". korisnika: ");
+                email = sc.nextLine();
+                inputValidator.validateEmail(email);
+            }
+            catch (IllegalArgumentException | InvalidUserInputException ex){
+                ex.printStackTrace();
+            }
 
-            System.out.println("Unesite prezime " + (i + 1) + ". korisnika: ");
+
             String lastName = sc.nextLine();
-
-
-            System.out.println("Unesite email " + (i + 1) + ".korisnika: ");
-            String email = sc.nextLine();
 
             User user = new User(name, lastName, email);
 
