@@ -34,7 +34,7 @@ public class Main {
 
         for(Event e : events){
             if( e instanceof Concert concert ){
-                e.getEventType();
+                concert.getEventType();
             }
         }
 
@@ -141,8 +141,13 @@ public class Main {
                     .eventDateTime(eventDateTime)
                     .build();
 
+            BigDecimal price = null;
+            try{
+                price = ticketService.setTicketPrice(sc, (i + 1));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException(e);
+            }
 
-            BigDecimal price = ticketService.setTicketPrice(sc, (i + 1));
 
             System.out.println("Unesite ID " + (i + 1) + ". bookinga");
             Integer id = sc.nextInt();

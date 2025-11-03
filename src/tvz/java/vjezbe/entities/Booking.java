@@ -36,10 +36,6 @@ public class Booking {
     }
 
 
-
-    // tu je moguce napravit downcasting i instanceof, jer triba pristupit nizem objektu preko eventa
-    // za laksi kod i manje dodavanja stvari kasnije, mozda bolje napravit abstraktnu metodu u events -
-    // - kako bi u svakoj podklasi mogli override i napravit ka mini toString i onda je samo dodat u ovaj toString
     @Override
     public String toString() {
         Event event = tickets.getEvent();
