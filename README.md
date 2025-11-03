@@ -23,15 +23,16 @@ java/
 hr/
 eventplanner/
 (paketi i klase projekta)
-.gitignore
-README.md
+
+- .gitignore
+- README.md
 
 ## 🚀 Pokretanje
 
 1. Kloniraj repozitorij:
    git clone https://github.com/UmirujuciFetus/EventPlannerHR.git
--Otvori projekt u IntelliJ IDEA ili Eclipse
--Pokreni glavnu klasu Main
+- Otvori projekt u IntelliJ IDEA ili Eclipse
+- Pokreni glavnu klasu Main
 
 ## Zahtjevi
 
