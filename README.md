@@ -20,7 +20,6 @@ Korisnik može definirati naziv, datum, lokaciju i sudionike događaja, te ih po
 src/
 main/
 java/
-hr/
 eventplanner/
 (paketi i klase projekta)
 
