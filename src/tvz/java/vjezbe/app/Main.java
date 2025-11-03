@@ -6,8 +6,12 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 import tvz.java.vjezbe.entities.*;
-import tvz.java.vjezbe.entities.BookingImplementation;
-import tvz.java.vjezbe.entities.TicketImplementation;
+import tvz.java.vjezbe.services.BookingImplementation;
+import tvz.java.vjezbe.services.TicketImplementation;
+import tvz.java.vjezbe.exceptions.InvalidEmailException;
+import tvz.java.vjezbe.exceptions.InvalidUserInputException;
+import tvz.java.vjezbe.validator.EmailValidator;
+import tvz.java.vjezbe.validator.InputValidator;
 
 public class Main {
 
@@ -23,14 +27,16 @@ public class Main {
 
         System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
-        Event[] events = new Event[5];
+        Event[] events = new Event[3];
         events[0] = new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format));
         events[1] = new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format));
-        events[2] = new Festival("Woodstock Festival",LocalDateTime.parse("15.06.1976. 10:00", format));
-        events[3] = new Promotions("Promocija Studenata",LocalDateTime.parse("06.11.2025. 13:00", format));
-        events[4] = new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal");
+        events[2] = new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal");
 
-        for(Event e : events){ e.getEventType(); }
+        for(Event e : events){
+            if( e instanceof Concert concert ){
+                e.getEventType();
+            }
+        }
 
         if ("DA".equalsIgnoreCase(sc.nextLine())) {
 
@@ -71,8 +77,9 @@ public class Main {
             System.out.println((i + 1) + ". booking");
 
             InputValidator inputValidator = new InputValidator();
+            EmailValidator emailValidator = new EmailValidator();
 
-            String name = "", email ="";
+            String name = "", lastName ="", email ="";
 
             //prvi checked exception
             // drugi dodat mozda za mail, lastname ž
@@ -82,9 +89,21 @@ public class Main {
             //pokusat nacin za ovo stavit u neki odvojeni dio????
             do {
                 try {
-                    System.out.println("Unesite ime korisnika: ");
+                    System.out.println("Unesite ime" +(i+1) +". korisnika: ");
                     name = sc.nextLine();
                     inputValidator.validateName(name);
+
+                } catch (InvalidUserInputException ex) {
+                    ex.printStackTrace();
+                }
+            }while (name.isEmpty());
+
+
+            do {
+                try {
+                    System.out.println("Unesite prezime" +(i+1) +". korisnika: ");
+                    lastName = sc.nextLine();
+                    inputValidator.validateLastName(lastName);
 
                 } catch (InvalidUserInputException ex) {
                     ex.printStackTrace();
@@ -94,14 +113,11 @@ public class Main {
             try {
                 System.out.println("Unesite email " + (i + 1) + ". korisnika: ");
                 email = sc.nextLine();
-                inputValidator.validateEmail(email);
+                emailValidator.validateEmail(email);
             }
-            catch (IllegalArgumentException | InvalidUserInputException ex){
+            catch (InvalidEmailException ex){
                 ex.printStackTrace();
             }
-
-
-            String lastName = sc.nextLine();
 
             User user = new User(name, lastName, email);
 
