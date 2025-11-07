@@ -3,20 +3,24 @@ package tvz.java.vjezbe.app;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tvz.java.vjezbe.entities.*;
 import tvz.java.vjezbe.services.BookingImplementation;
 import tvz.java.vjezbe.services.TicketImplementation;
-import tvz.java.vjezbe.exceptions.InvalidEmailException;
-import tvz.java.vjezbe.exceptions.InvalidUserInputException;
-import tvz.java.vjezbe.validator.EmailValidator;
-import tvz.java.vjezbe.validator.InputValidator;
+
 
 public class Main {
 
     public static final Integer NUMBER_OF_USERS = 2;
     public static final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
+
 
     static void main(String[] args) {
 
@@ -27,10 +31,10 @@ public class Main {
 
         System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
 
-        Event[] events = new Event[3];
-        events[0] = new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format));
-        events[1] = new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format));
-        events[2] = new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal");
+        List<Event> events = new ArrayList<>(3);
+        events.add(new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format)));
+        events.add(new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format)));
+        events.add(new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal"));
 
         for(Event e : events){
             if( e instanceof Concert concert ){
@@ -40,7 +44,8 @@ public class Main {
 
         if ("DA".equalsIgnoreCase(sc.nextLine())) {
 
-            Booking[] bookings = generateBookings(sc, ticketService);
+            List<Booking> bookings = bookingService.generateBookings(sc, ticketService);
+
 
             System.out.println("Ukupna cijena svih bookinga je: " + bookingService.totalBookingPrice(bookings));
 
@@ -56,113 +61,12 @@ public class Main {
             else {
                 System.out.println("Krivi upit!");
             }
-            System.out.print("Unesite ID: ");
 
+            System.out.print("Unesite ID: ");
             System.out.println( bookingService.bookingSearch(bookings, sc) );
         }
     }
 
-
-    private static Booking[] generateBookings(Scanner sc, TicketImplementation ticketService) {
-
-
-        Booking[] bookings = new Booking[NUMBER_OF_USERS];
-
-        for (Integer i = 0; i < NUMBER_OF_USERS; i++) {
-
-            // pokusat nac neki nacin da se sve to u jednoj liniji (pomocu formatiranja inputa)
-            // posto u User ima Ticket[] lista, znaci da jedan user moze kupit vise ticketa, stoga imati upit i za to
-            // takoder, posto jedan booking ugl radi jedan user, nekako uredit to da se pita input samo jednog usera po bookingu ali da taj user opet moze vise koncerata
-            // ideja: napravit format za email i generiranje bookingID
-            System.out.println((i + 1) + ". booking");
-
-            InputValidator inputValidator = new InputValidator();
-            EmailValidator emailValidator = new EmailValidator();
-
-            String name = "", lastName ="", email ="";
-
-            //prvi checked exception
-            // drugi dodat mozda za mail, lastname ž
-            // ili dodat drugi za readanje filevoa ( mozda log fileova u ovom slucaju)
-
-            //ostala dva unchecked dodat za krivu cijenu (-) i sl.
-            //pokusat nacin za ovo stavit u neki odvojeni dio????
-            do {
-                try {
-                    System.out.println("Unesite ime" +(i+1) +". korisnika: ");
-                    name = sc.nextLine();
-                    inputValidator.validateName(name);
-
-                } catch (InvalidUserInputException ex) {
-                    ex.printStackTrace();
-                }
-            }while (name.isEmpty());
-
-
-            do {
-                try {
-                    System.out.println("Unesite prezime" +(i+1) +". korisnika: ");
-                    lastName = sc.nextLine();
-                    inputValidator.validateLastName(lastName);
-
-                } catch (InvalidUserInputException ex) {
-                    ex.printStackTrace();
-                }
-            }while (name.isEmpty());
-
-            try {
-                System.out.println("Unesite email " + (i + 1) + ". korisnika: ");
-                email = sc.nextLine();
-                emailValidator.validateEmail(email);
-            }
-            catch (InvalidEmailException ex){
-                ex.printStackTrace();
-            }
-
-            User user = new User(name, lastName, email);
-
-            System.out.println("Unesite ime " + (i + 1) + ". događaja/koncerta: ");
-            String eventName = sc.nextLine();
-
-            System.out.println("Unesite ime " + (i + 1) + ". izvođača: ");
-            String concertName = sc.nextLine();
-
-            System.out.println("Unesite datum " + (i + 1) + ". događaja/koncerta: ");
-            String datum = sc.nextLine();
-            LocalDateTime eventDateTime = LocalDateTime.parse(datum, format);
-
-            System.out.println("Unesite žanr " + (i + 1) + ". izvođača: ");
-            String concertGenre = sc.nextLine();
-
-            Event concert = new Concert.ConcertBuilder()
-                    .artistName(concertName)
-                    .concertGenre(concertGenre)
-                    .eventName(eventName)
-                    .eventDateTime(eventDateTime)
-                    .build();
-
-            BigDecimal price = null;
-            try{
-                price = ticketService.setTicketPrice(sc, (i + 1));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            System.out.println("Unesite ID " + (i + 1) + ". bookinga");
-            Integer id = sc.nextInt();
-
-            sc.nextLine();
-
-            Ticket ticket = new Ticket(concert, price);
-
-            Booking newBooking = new Booking(user, ticket, id);
-
-            bookings[i] = newBooking;
-
-        }
-        return bookings;
-    }
 
 
 

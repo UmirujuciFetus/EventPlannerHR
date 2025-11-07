@@ -1,7 +1,7 @@
 package tvz.java.vjezbe.validator;
 
 import tvz.java.vjezbe.exceptions.InvalidEmailException;
-
+import java.util.Scanner;
 /**
  * Služi za validaciju unosa e-maila.
  *
@@ -18,13 +18,15 @@ public class EmailValidator {
      * e-mail ne odgovara regex formatu {@code ^[A-Za-z0-9+_.-]+@(.+)$}.
      *
      */
-    public void validateEmail(String email) throws InvalidEmailException {
-        if(email  == null || email.isEmpty()){
+    public String validateEmail(Scanner sc) throws InvalidEmailException {
+        String email = sc.nextLine();
+        if(email == null || email.isEmpty()){
             throw new InvalidEmailException("E-mail ne smije biti prazan!");
         }
 
         if(!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
             throw new InvalidEmailException("Format e-maila nije valjan!");
         }
+        return email;
     }
 }
