@@ -1,4 +1,7 @@
 package tvz.java.vjezbe.entities;
+
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Booking {

@@ -17,6 +17,7 @@ import tvz.java.vjezbe.services.TicketImplementation;
 
 public class Main {
 
+    //stavit u enum ako je moguce
     public static final Integer NUMBER_OF_USERS = 2;
     public static final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -29,7 +30,12 @@ public class Main {
         TicketImplementation ticketService = new TicketImplementation();
         BookingImplementation bookingService = new BookingImplementation();
 
-        System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
+
+
+
+        // ovo se moze zaminit kasnije s nekom mapon/listom od svih mogucih eventa koji postoje / ili svi eventi koji su u bookingu napravljeni)
+        // tipa createEvent i onda dodaje event s datumom i sl u set
+        // ili kad korisnik zeli ispisat sve bookinge koje je napravia onda da bude u obliku mape
 
         List<Event> events = new ArrayList<>(3);
         events.add(new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format)));
@@ -41,17 +47,27 @@ public class Main {
                 concert.getEventType();
             }
         }
+        // umisto ovog mozda dodat neki switch za odabir eventa (broj eventova i informacije za svaki) i onda kasnije organizacija korisnika
 
+        System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
         if ("DA".equalsIgnoreCase(sc.nextLine())) {
 
             List<Booking> bookings = bookingService.generateBookings(sc, ticketService);
 
 
-            System.out.println("Ukupna cijena svih bookinga je: " + bookingService.totalBookingPrice(bookings));
+            BigDecimal totalBookingPrice = bookings.stream()
+                    .map(Booking::getTickets)
+                    .map(Ticket::getPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
+            System.out.println("Ukupna cijena svih bookinga je: " + totalBookingPrice);
 
             System.out.print("Želite li najveću ili najmanju cijenu? (MAX/MIN): ");
             String answer = sc.nextLine();
 
+
+            // dodat mozda lambdu za ovo
             if ("MAX".equalsIgnoreCase(answer)) {
                 System.out.println("Booking s najvećom cijenom: " + bookingService.calculateMaxBooking(bookings));
 
