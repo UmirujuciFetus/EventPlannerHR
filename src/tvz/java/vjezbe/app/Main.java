@@ -1,18 +1,17 @@
 package tvz.java.vjezbe.app;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tvz.java.vjezbe.entities.*;
-import tvz.java.vjezbe.services.BookingImplementation;
-import tvz.java.vjezbe.services.TicketImplementation;
+
+import tvz.java.vjezbe.services.BookingServiceImpl;
+import tvz.java.vjezbe.services.EventServiceImpl;
+import tvz.java.vjezbe.services.TicketServiceImpl;
+
+import tvz.java.vjezbe.util.BookingUtil;
 
 
 public class Main {
@@ -24,19 +23,18 @@ public class Main {
 
 
     static void main(String[] args) {
+        logger.info("ZAPOČET NOVI PROGRAM!");
 
         Scanner sc = new Scanner(System.in);
 
-        TicketImplementation ticketService = new TicketImplementation();
-        BookingImplementation bookingService = new BookingImplementation();
-
-
-
+        TicketServiceImpl ticketService = new TicketServiceImpl();
+        BookingServiceImpl bookingServiceImpl = new BookingServiceImpl();
+        EventServiceImpl eventService = new EventServiceImpl();
 
         // ovo se moze zaminit kasnije s nekom mapon/listom od svih mogucih eventa koji postoje / ili svi eventi koji su u bookingu napravljeni)
-        // tipa createEvent i onda dodaje event s datumom i sl u set
         // ili kad korisnik zeli ispisat sve bookinge koje je napravia onda da bude u obliku mape
 
+        /*
         List<Event> events = new ArrayList<>(3);
         events.add(new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format)));
         events.add(new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format)));
@@ -47,21 +45,25 @@ public class Main {
                 concert.getEventType();
             }
         }
-        // umisto ovog mozda dodat neki switch za odabir eventa (broj eventova i informacije za svaki) i onda kasnije organizacija korisnika
+        */
 
-        System.out.println("Dobrodošli u EventPlanner Hrvatska!\nŽelite li organizirati događanja i korisnike?");
-        if ("DA".equalsIgnoreCase(sc.nextLine())) {
+        System.out.println("Dobrodošli u EventPlanner Hrvatska!");
 
-            List<Booking> bookings = bookingService.generateBookings(sc, ticketService);
+        String choice;
+        do {
+            System.out.println("Želite li unijeti događaj? (y/n)");
+            choice = sc.nextLine();
+
+            if (choice.equalsIgnoreCase("y")) {
+                eventService.createEvent(sc);
+            }
+
+        } while (choice.equalsIgnoreCase("y"));
 
 
-            BigDecimal totalBookingPrice = bookings.stream()
-                    .map(Booking::getTickets)
-                    .map(Ticket::getPrice)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        List<Booking> bookings = bookingServiceImpl.generateBookings(sc, ticketService, eventService);
 
-
-            System.out.println("Ukupna cijena svih bookinga je: " + totalBookingPrice);
+            System.out.println("Ukupna cijena svih bookinga je: " + BookingUtil.totalPrice(bookings));
 
             System.out.print("Želite li najveću ili najmanju cijenu? (MAX/MIN): ");
             String answer = sc.nextLine();
@@ -69,27 +71,16 @@ public class Main {
 
             // dodat mozda lambdu za ovo
             if ("MAX".equalsIgnoreCase(answer)) {
-                System.out.println("Booking s najvećom cijenom: " + bookingService.calculateMaxBooking(bookings));
+                System.out.println("Booking s najvećom cijenom: " + BookingUtil.maxBooking(bookings));
 
             } else if ("MIN".equalsIgnoreCase(answer)) {
-                System.out.println("Booking s najMANJOM cijenom: " + bookingService.calculateMinBooking(bookings));
+                System.out.println("Booking s najMANJOM cijenom: " + BookingUtil.minBooking(bookings));
             }
             else {
                 System.out.println("Krivi upit!");
             }
 
             System.out.print("Unesite ID: ");
-            System.out.println( bookingService.bookingSearch(bookings, sc) );
-        }
+            System.out.println( bookingServiceImpl.bookingSearch(bookings, sc) );
     }
-
-
-
-
 }
-
-
-
-
-
-

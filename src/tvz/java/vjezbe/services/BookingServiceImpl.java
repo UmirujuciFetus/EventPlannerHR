@@ -8,56 +8,17 @@ import tvz.java.vjezbe.validator.EmailValidator;
 import tvz.java.vjezbe.validator.InputValidator;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 import static tvz.java.vjezbe.app.Main.*;
 
-public class BookingImplementation implements BookingInterface {
+public class BookingServiceImpl implements BookingService {
 
     @Override
-    public BigDecimal totalBookingPrice(List<Booking> bookings) {
-        BigDecimal sum = BigDecimal.ZERO;
-        for(Booking b : bookings) {
-            sum = sum.add(b.getTickets().getPrice());
-        }
-        return sum;
-    }
-
-    @Override
-    public Booking calculateMaxBooking(List<Booking> bookings) {
-        if (bookings == null || bookings.isEmpty()) {
-            System.out.println("Nema podataka o bookinzima!");
-            return null;
-        }
-        Booking maxBooking = bookings.getFirst();
-        for (Booking elem : bookings) {
-            if (elem.getTickets().getPrice().compareTo(maxBooking.getTickets().getPrice()) > 0) {
-                maxBooking = elem;
-            }
-        }
-        return maxBooking;
-    }
-
-    @Override
-    public Booking calculateMinBooking(List<Booking> bookings) {
-        if (bookings == null || bookings.isEmpty()) {
-            System.out.println("Nema podataka o bookinzima!");
-            return null;
-        }
-        Booking minBooking= bookings.getFirst();
-        for (Booking elem : bookings) {
-            if (elem.getTickets().getPrice().compareTo(minBooking.getTickets().getPrice()) < 0) {
-                minBooking = elem;
-            }
-        }
-        return minBooking;
-    }
-
-    @Override
-    public List<Booking> generateBookings(Scanner sc, TicketImplementation ticketService) {
+    public List<Booking> generateBookings(Scanner sc, TicketServiceImpl ticketService, EventServiceImpl eventService) {
         List<Booking> bookings = new ArrayList<>(NUMBER_OF_USERS);
 
         for (Integer i = 0; i < NUMBER_OF_USERS; i++) {
@@ -80,7 +41,7 @@ public class BookingImplementation implements BookingInterface {
                     name = inputValidator.validateName(sc);
                     logger.info("Uneseno ime za korisnika: {}", name);
                 } catch (InvalidUserInputException ex) {
-                    logger.warn("Validacija imena neuspješna: {}", ex.getMessage());
+                    logger.warn("Validacija imena neuspješna: {}", ex.getMessage()); //uredit da se vidi sto je upisano
                 }
             }while(name.isEmpty());
 
@@ -118,45 +79,21 @@ public class BookingImplementation implements BookingInterface {
                 }
             }while(price.compareTo(BigDecimal.ZERO) < 0);
 
-
-
             User user = new User(name, lastName, email);
-
-            System.out.println("Unesite ime " + (i + 1) + ". događaja/koncerta: ");
-            String eventName = sc.nextLine();
-
-            System.out.println("Unesite ime " + (i + 1) + ". izvođača: ");
-            String concertName = sc.nextLine();
-
-            System.out.println("Unesite datum " + (i + 1) + ". događaja/koncerta: ");
-            String datum = sc.nextLine();
-            LocalDateTime eventDateTime = LocalDateTime.parse(datum, format);
-
-            System.out.println("Unesite žanr " + (i + 1) + ". izvođača: ");
-            String concertGenre = sc.nextLine();
-
-            Event concert = new Concert.ConcertBuilder()
-                    .artistName(concertName)
-                    .concertGenre(concertGenre)
-                    .eventName(eventName)
-                    .eventDateTime(eventDateTime)
-                    .build();
 
             System.out.println("Unesite ID " + (i + 1) + ". bookinga");
             Integer id = sc.nextInt();
-
             sc.nextLine();
 
-            Ticket ticket = new Ticket(concert, price);
+            var event = chooseUserEvent(eventService, sc);
+
+            Ticket ticket = new Ticket(event, price);
             Booking newBooking = new Booking(user, ticket, id);
 
             bookings.add(newBooking);
-
-
         }
         return bookings;
     }
-
 
     @Override
     public BookingRecord bookingSearch(List<Booking> bookings, Scanner sc){
@@ -171,5 +108,34 @@ public class BookingImplementation implements BookingInterface {
         }
         System.out.println("Neispravan Booking ID!");
         return null;
+    }
+
+    //vjv napravit metodu koji od odabranih tipova dogadaja za dodat korisniku ( jer moze bit razlicitih koncerata)
+    @Override
+    public Event chooseUserEvent(EventServiceImpl eventService,Scanner sc){
+        System.out.println("ODABERI TIP DOGAĐAJA KOJI JE KORISNIK ODABRAO:");
+        System.out.println("1) Koncert\n2) Premijera filma\n3) Car meet");
+
+        return switch (sc.nextInt()) {
+            case 1 -> eventService.getAllEvents().stream()
+                    .filter(e -> e instanceof Concert)
+                    .map(e -> (Concert) e)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
+
+            case 2 -> eventService.getAllEvents().stream()
+                    .filter(e -> e instanceof CarMeet)
+                    .map(e -> (CarMeet) e)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
+
+            case 3 -> eventService.getAllEvents().stream()
+                    .filter(e -> e instanceof MoviePremiere)
+                    .map(e -> (MoviePremiere) e)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
+
+            default -> throw new IllegalArgumentException("Neispravna opcija odabrana!");
+        };
     }
 }
