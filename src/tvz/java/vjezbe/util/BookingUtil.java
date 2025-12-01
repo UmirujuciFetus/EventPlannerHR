@@ -10,19 +10,19 @@ import java.util.List;
 public class BookingUtil {
     public static BigDecimal totalPrice(List<Booking> bookings){
         return bookings.stream()
-                .map(Booking::getTickets)
+                .map(Booking::tickets)
                 .map(Ticket::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     public static Booking maxBooking(List<Booking>bookings){
         return bookings.stream()
-                .sorted(Comparator.comparing(b -> b.getTickets().getPrice()))
+                .sorted(Comparator.comparing(b -> b.tickets().getPrice()))
                 .toList()
                 .reversed()
                 .getFirst();
     }
     public static Booking minBooking(List<Booking>bookings){
-        bookings.sort(Comparator.comparing(b ->b.getTickets().getPrice()));
+        bookings.sort(Comparator.comparing(b ->b.tickets().getPrice()));
         return bookings.getFirst();
     }
 

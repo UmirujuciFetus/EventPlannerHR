@@ -15,7 +15,7 @@ import static tvz.java.vjezbe.app.Main.format;
 
 public class EventServiceImpl implements EventService {
 
-    private SequencedSet<Event> events = new TreeSet<>(Comparator.comparing(Event::getEventDate));
+    private final SequencedSet<Event> events = new TreeSet<>(Comparator.comparing(Event::getEventDate));
 
 
     public SequencedSet<Event> getAllEvents(){

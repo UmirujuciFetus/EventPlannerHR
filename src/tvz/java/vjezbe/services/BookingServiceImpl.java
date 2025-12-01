@@ -8,18 +8,16 @@ import tvz.java.vjezbe.validator.EmailValidator;
 import tvz.java.vjezbe.validator.InputValidator;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 import static tvz.java.vjezbe.app.Main.*;
 
 public class BookingServiceImpl implements BookingService {
-
+    private final List<Booking> bookings = new ArrayList<>(NUMBER_OF_USERS);
     @Override
     public List<Booking> generateBookings(Scanner sc, TicketServiceImpl ticketService, EventServiceImpl eventService) {
-        List<Booking> bookings = new ArrayList<>(NUMBER_OF_USERS);
+
 
         for (Integer i = 0; i < NUMBER_OF_USERS; i++) {
 
@@ -31,8 +29,6 @@ public class BookingServiceImpl implements BookingService {
 
 
             // posto u User ima Ticket[] lista, znaci da jedan user moze kupit vise ticketa, stoga imati upit i za to
-            // takoder, posto jedan booking ugl radi jedan user, nekako uredit to da se pita input samo jednog usera po bookingu ali da taj user opet moze vise koncerata
-            // ideja:generiranje bookingID
             System.out.println((i + 1) + ". booking");
 
             do {
@@ -41,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
                     name = inputValidator.validateName(sc);
                     logger.info("Uneseno ime za korisnika: {}", name);
                 } catch (InvalidUserInputException ex) {
-                    logger.warn("Validacija imena neuspješna: {}", ex.getMessage()); //uredit da se vidi sto je upisano
+                    logger.warn("Validacija imena neuspješna: {}", ex.getMessage());
                 }
             }while(name.isEmpty());
 
@@ -85,6 +81,9 @@ public class BookingServiceImpl implements BookingService {
             Integer id = sc.nextInt();
             sc.nextLine();
 
+
+
+
             var event = chooseUserEvent(eventService, sc);
 
             Ticket ticket = new Ticket(event, price);
@@ -96,18 +95,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingRecord bookingSearch(List<Booking> bookings, Scanner sc){
+    public Optional<Booking> bookingSearch(List<Booking> bookings, Scanner sc){
         Integer searchID = sc.nextInt();
 
-        if(bookings != null && !bookings.isEmpty()){
-            for(Booking booking : bookings){
-                if(booking.getBookingID().equals(searchID)){
-                    return new BookingRecord(booking.getUser(), booking.getTickets(), booking.getBookingID());
-                }
-            }
-        }
-        System.out.println("Neispravan Booking ID!");
-        return null;
+        return bookings.stream()
+                .filter(Objects::nonNull)
+                .filter(booking -> searchID.equals(booking.bookingID()))
+                .findAny();
     }
 
     //vjv napravit metodu koji od odabranih tipova dogadaja za dodat korisniku ( jer moze bit razlicitih koncerata)
@@ -119,7 +113,6 @@ public class BookingServiceImpl implements BookingService {
         return switch (sc.nextInt()) {
             case 1 -> eventService.getAllEvents().stream()
                     .filter(e -> e instanceof Concert)
-                    .map(e -> (Concert) e)
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
 
@@ -130,12 +123,23 @@ public class BookingServiceImpl implements BookingService {
                     .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
 
             case 3 -> eventService.getAllEvents().stream()
-                    .filter(e -> e instanceof MoviePremiere)
-                    .map(e -> (MoviePremiere) e)
+                    .filter(e -> e instanceof MoviePremiere mp)
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Ne postoji događaj tog tipa!"));
 
             default -> throw new IllegalArgumentException("Neispravna opcija odabrana!");
         };
     }
+
+    public void getUserBookings(){
+//        Map<User, List<Booking>> userBookings = new TreeMap<>(Comparator.comparing(User::getLastName));
+//        for(Booking b : bookings){
+//            userBookings.put(b.user(), bookings);
+//        }
+//        for(int i = 0; i< userBookings.size(); i++){
+//            System.out.println((i+1) + ". " + userBookings.);
+//        }
+    }
 }
+
+

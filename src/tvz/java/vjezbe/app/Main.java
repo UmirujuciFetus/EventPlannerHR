@@ -16,7 +16,6 @@ import tvz.java.vjezbe.util.BookingUtil;
 
 public class Main {
 
-    //stavit u enum ako je moguce
     public static final Integer NUMBER_OF_USERS = 2;
     public static final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -33,19 +32,6 @@ public class Main {
 
         // ovo se moze zaminit kasnije s nekom mapon/listom od svih mogucih eventa koji postoje / ili svi eventi koji su u bookingu napravljeni)
         // ili kad korisnik zeli ispisat sve bookinge koje je napravia onda da bude u obliku mape
-
-        /*
-        List<Event> events = new ArrayList<>(3);
-        events.add(new CarMeet("Meet na Crnom!",LocalDateTime.parse("19.02.2026. 19:00", format)));
-        events.add(new MoviePremiere("Premijera 'Fiume o Morte!' ",LocalDateTime.parse("25.07.2025. 15:00", format)));
-        events.add(new Concert("Bow to None Tour", LocalDateTime.parse("29.07.2024. 19:00", format),"Suffocation", "Death metal"));
-
-        for(Event e : events){
-            if( e instanceof Concert concert ){
-                concert.getEventType();
-            }
-        }
-        */
 
         System.out.println("Dobrodošli u EventPlanner Hrvatska!");
 
